@@ -1,0 +1,67 @@
+FORMAT: 1A
+HOST: https://healthgroup.fjaus.com
+
+#  FJA US Document API for Health BQ 2.0
+
+Document API allows unified access to the document generation facility. The usage of the API releases the consumer 
+from being aware of the data structures required to generate document, how to obtain the data, and how to invoke 
+the document application
+
+
+## Group Documents
+
+Resources related to documents in the API.
+
+## Document [/documents/{documentType}/{extensionType}?{groupId}?{offerId}?{planId}?{signatureRequired}?{marketSegment}?{lob}?{productType}]
+
+A document is a binary object in PDF or MS Word, or a text stream in HTML format. The query parameters determine which group/offer or plan should
+be included in the generated response. When group and offer IDs are supplied the plan ID may be ommitted although
+it is preferred to have all 3 parameters.
+
+
++ Parameters
+    + documentType: Allowed values are: CUSTOMER_SIGNOFF | CODING_DOCUMENT | BENEFIT_HIGHLIGHTS (required, string) - The type of the document requested
+    + extensionType: Allowed values are: PDF|DOC|DOCX|HTML (required, string) - The output format type
+    + groupId (optional, String) - The group Object ID a.k.a. OID
+    + offerId (optional, String) - The offer OID within the subgroup. Must be provided when groupId is used
+    + planId (required, String)  - The plan's primary key
+    + marketSegment (required, String) - The plan's market segment's acronym 
+    + lob (required, String) - The plan's insurance line's acronym (a.k.a. line of business)
+    + productType (required, String) - The plan's product type's acronym 
+    + signatureRequired: true | false (optional, String) - Include a signature component when applicable
+
+
+
+### Retrieve a Document [GET]
+
+
++ Response 200 (application/pdf)
+
+    + Headers
+        
+            Content-Disposition: attachment; filename="fname.pdf"
+        
+    + Body
+
+            Binary stream
+
++ Response 200 (application/msword)
+
+    + Headers
+        
+            Content-Disposition: attachment; filename="fname.doc"
+        
+    + Body
+
+            Binary stream
+
++ Response 200 (text/html)
+
+    + Headers
+        
+            Content-Disposition: attachment; filename="fname.html"
+        
+    + Body
+
+            Binary stream
+
